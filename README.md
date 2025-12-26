@@ -36,14 +36,14 @@ If file can't be parsed the lambda will not get called and a false is returned.
 
 ```c++
   ImageRGB rgb;
-  bool is_ok = MiniTiff::load(infilename, [&](int w, int h, int num_components, int bits_per_component, MiniTiff::FileReader& f) -> bool {
+  bool is_ok = MiniTiff::load(infilename, [&](MiniTiff::FileReader& f) -> bool {
     // Confirm the tiff contains the format we expect in this concrete example
-    if (bits_per_component != 16 || num_components != 3)
+    if (f.bits_per_component != 16 || f.num_components != 3)
       return false;
     // Redimension my image buffer
-    rgb.resize(w, h);
+    rgb.resize(f.w, f.h);
     // Read the data from f.
-    return f.readBytes( rgb.data(), w * h * num_components * (bits_per_component / 8));
+    return f.readBytes( rgb.data(), f.w * f.h * f.bytes_per_pixel);
     });
 ```
 
