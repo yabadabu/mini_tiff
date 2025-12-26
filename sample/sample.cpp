@@ -12,17 +12,17 @@ bool runTest(const Test& t) {
 
 	std::vector< uint8_t > color_data;
 
-	bool is_ok = MiniTiff::load(t.filename, [&](int w, int h, int num_comps, int bits_per_comp, MiniTiff::FileReader& f) {
+	bool is_ok = MiniTiff::load(t.filename, [&](MiniTiff::FileReader& f) {
 
-		if (t.num_comps != num_comps)
-			printf("%20s : num_comps = %d (expected %d)\n", t.filename, num_comps, t.num_comps);
-		if (t.bits_per_comp != bits_per_comp)
-			printf("%20s : num_bits  = %d (expected %d)\n", t.filename, bits_per_comp, t.bits_per_comp);
-		if (t.w != w || t.h != h)
+		if (t.num_comps != f.num_components)
+			printf("%20s : num_comps = %d (expected %d)\n", t.filename, f.num_components, t.num_comps);
+		if (t.bits_per_comp != f.bits_per_component)
+			printf("%20s : num_bits  = %d (expected %d)\n", t.filename, f.bits_per_component, t.bits_per_comp);
+		if (t.w != f.w || t.h != f.h)
 			printf("%20s : dimensions don't match\n", t.filename);
 
-		if (w == t.w && h == t.h && t.num_comps == num_comps && bits_per_comp == t.bits_per_comp) {
-			size_t total_bytes = w * h * num_comps * bits_per_comp / 8;
+		if (f.w == t.w && f.h == t.h && t.num_comps == f.num_components && f.bits_per_component == t.bits_per_comp) {
+			size_t total_bytes = f.w * f.h * f.bytes_per_pixel;
 			color_data.resize(total_bytes);
 			return f.readBytes(color_data.data(), total_bytes);
 		}
