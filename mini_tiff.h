@@ -14,7 +14,7 @@
 	// Load a tiff takes longer, but you can read the file directly to your container without tmp allocations
 	ImageRGB rgb;
 	bool is_ok = MiniTiff::load(infilename, [&](MiniTiff::FileReader& f) {
-		if (bits_per_component != 16 || f.num_components != 3)
+		if (f.bits_per_component != 16 || f.num_components != 3)
 			return false;
 		rgb.resize(f.w, f.h);
 		return f.readBytes( rgb.data(), f.w * f.h * f.bytes_per_pixel);
