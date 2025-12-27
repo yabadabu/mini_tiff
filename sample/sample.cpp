@@ -43,7 +43,7 @@ bool runTest(const Test& t) {
 
 	if (is_ok) {
 		char ofilename[256];
-		sprintf(ofilename, "saved_%s", t.filename);
+		snprintf(ofilename, sizeof(ofilename)-1, "saved_%s", t.filename);
 		bool save_ok = MiniTiff::save(ofilename, t.w, t.h, t.num_comps, t.bits_per_comp, color_data.data());
 		if (!save_ok) {
 			printf("Saving %s failed\n", ofilename);
