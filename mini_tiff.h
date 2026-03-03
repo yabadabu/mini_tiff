@@ -25,7 +25,7 @@
 
 namespace MiniTiff {
 
-	static const const char* libVersion = "1.0.0";
+	static const char* libVersion = "1.0.0";
 
 	static constexpr uint16_t IFD_ImageType = 0x00FE;
 	static constexpr uint16_t IFD_Width = 0x0100;
